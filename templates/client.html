@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+
+<body style="background: url('/static/images/neonaboba.jpg'); background-size: cover">
+    <form action="/logout">
+        <button type="submit" class="exit"> Выйти </button>
+    </form>
+    <div class="myhtmltabs">
+        <input type="radio" id="hometab" name="myhtmltabs" checked>
+        <label for="hometab">Мои поля</label>
+
+        <div class="tab">
+            {% if sl == {} %}
+            <b style="color: white">У вас пока нет полей :(</b>
+            {% endif %}
+            {% for i in sl.keys() %}
+            <div class="polewithname">
+            <form action="/open_field" method="post">
+                <button type="submit" class="image-button knopka_with_price2" name="open_field" value="{{i}}"><img class="image2"
+                        src="static/pole/pole{{sl[i][0]}}.png"></button>
+                <div class="nameprize2"><b>Поле №{{i}}</b></div>
+            </form>
+            </div>
+            {% endfor %}
+        </div>
+
+        <input type="radio" id="silvertab" name="myhtmltabs">
+        <label for="silvertab">Мои призы</label>
+        <div class="tab">
+            {% if lst_with_prizes == [] %}
+            <b style="color: white">У вас пока нет призов :(</b>
+            {% endif %}
+
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid text-center overflow-hidden">
+                                <div class="row justify-content-md-center" style="padding: 10px;">
+                                    <div class="col-md-auto">
+                                        <img class="image">
+                                    </div>
+                                </div>
+                                <div class="row gy-2">
+                                    <b></b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                const exampleModal = document.getElementById('exampleModal')
+                if (exampleModal) {
+                    exampleModal.addEventListener('show.bs.modal', event => {
+                        // Button that triggered the modal
+                        const button = event.relatedTarget
+                        // Extract info from data-bs-* attributes
+                        const recipient = button.getAttribute('data-bs-whatever')
+                        const file = button.getAttribute('data-bs-file')
+                        const desc = button.getAttribute('data-bs-desc')
+                        // If necessary, you could initiate an Ajax request here
+                        // and then do the updating in a callback.
+
+                        // Update the modal's content.
+                        const modalTitle = exampleModal.querySelector('.modal-title')
+                        const modalBodyInput = exampleModal.querySelector('.modal-body img')
+                        const modalDesc = exampleModal.querySelector('.modal-body b')
+
+                        modalTitle.textContent = `Приз: ${recipient}`
+                        modalBodyInput.src = `/static/prizes/${file}`
+                        modalDesc.textContent = `${desc}`
+                    })
+                }
+            </script>
+
+            {% for i in lst_with_prizes %}
+                <div class="polewithname">
+                <button class="image-button knopka_with_price2" type="button" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" data-bs-whatever="{{i[1]}}"
+                    data-bs-file="{{i[0]}}" data-bs-desc="{{i[2]}}"><img class="image3"
+                        src="static/prizes/{{i[0]}}"></button>
+                <div class="nameprize3"><b>{{i[1]}}</b></div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</body>
+
+</html>

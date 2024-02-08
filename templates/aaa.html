@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<body>
+
+
+  <div class="container">
+    <div class="banner">
+      <img id="banner__img" src="" alt="" width="100%" height="300">
+    </div>
+    <div class="tabs">
+      <div class="tab" data-name="one">Первая вкладка</div>
+      <div class="tab" data-name="two">Вторая вкладка</div>
+      <div class="tab" data-name="three">Третья вкладка</div>
+    </div>
+    <div class="content">
+      <div class="page page_one">Содержимое первой вкладки</div>
+      <div class="page page_two">Содержимое второй вкладки</div>
+      <div class="page page_three">Содержимое третьей вкладки</div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+
+      let tabs = $('.tab'); // все табы
+      let pages = $('.page'); // блоки с контентом для всех табов
+      let banner = $('#banner__img'); // изображение
+
+      // при клике на таб вызываем tabActivate с именем таба
+      $('.tab').click(function () {
+        tabActivate($(this).data('name'));
+      });
+
+
+      // сразу активируем таб 'one'
+      tabActivate('one');
+
+      function tabActivate(name) {
+
+        //подгружаем нужную картинку
+        banner.attr('src', "img/" + name + ".jpg");
+
+        // активируем нужный таб и дезактивируем остальные
+        tabs.each(function (ind, tab) {
+          if ($(tab).data('name') == name) {
+            $(tab).addClass('active');
+          } else {
+            $(tab).removeClass('active');
+          }
+        });
+
+        //открываем нужную вкладку и закрываем остальные
+        pages.each(function (ind, page) {
+          $(page).hide();
+        });
+        $('.page_' + name).show();
+      }
+    })
+  </script>
+</body>
+
+</html>

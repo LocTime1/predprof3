@@ -1,0 +1,131 @@
+<html>
+
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link href="\static\css\main.css" rel="stylesheet">
+  <link href="\static\css\style.css" rel="stylesheet">
+  <title>microblog</title>
+</head>
+
+<body style="background: url('/static/images/neoncreate.jpg'); background-size: cover">
+
+
+  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="container-fluid text-center overflow-hidden">
+            <div class="row justify-content-md-center">
+              <div class="col-md-auto">
+                <b>Извините, но у вас не осталось выстрелов</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Вы выиграли!!!!!!!</h1>
+        </div>
+        <div class="modal-body">
+          <div class="www">
+            <form action="/client" method="post">
+              <button type="submit" class="btn btn-secondary" name="win">Перейти к призам</button>
+            </form>
+          </div>
+          <div class='qqq'>
+            <form action="/open_field" method="post">
+              <button type="submit" class="btn btn-secondary" name="win">Продолжить стрелять</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const exampleModal = document.getElementById('exampleModal')
+    if (exampleModal) {
+      exampleModal.addEventListener('show.bs.modal', event => {
+        // Button that triggered the modal
+        const button = event.relatedTarget
+
+        const coords = button.getAttribute('data-bs-whatever')
+
+        const modalButton = exampleModal.querySelector('.modal-body .qqq button')
+        const modalButton2 = exampleModal.querySelector('.modal-body .www button')
+
+        modalButton.value = coords
+        modalButton2.value = coords
+      })
+    }
+  </script>
+
+
+
+  <form action="/client">
+    <button style="padding: 5px;
+    border: 3px solid #f3c;
+    background-color: transparent;
+    color: white;
+    position: relative;">Назад</button>
+  </form>
+  <table class="pole">
+    <tbody>
+      <th></th>
+      {% for k in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[:n] %}
+      <th class="abcde">{{k}}</th>
+      {% endfor %}
+      {% for i in range(1, n + 1) %}
+      <tr class="yacheika">
+        {% for j in range(n + 1) %}
+        <th class="yacheika">
+          {% if [i, j] in d %}
+          {% if [i, j] in hits %}
+          <button type="button" class="knopka image-button"><img class="image" style="width: 30px; height: 30px; position: relative; right: 7px; bottom: 3px;" src="static/images/break_ship.jpg"></button>
+          {% else %}
+          {% if cnt_hit == 0 %}
+          <button type="button" class="knopka" data-bs-toggle="modal" data-bs-target="#exampleModal1"></button>
+          {% else %}
+          <button type="button" class="knopka" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            data-bs-whatever="{{i}} {{j}}"></button>
+          {% endif %}
+          {% endif %}
+          {% elif j == 0 %}
+          <div class="cifri">
+            {{i}}
+          </div>
+          {% else %}
+          {% if [i, j] in hits %}
+          <button type="button" class="knopka image-button"><img class="image" style="width: 30px; height: 30px; position: relative; right: 8px; bottom: 3px;" src="static/images/tochka.png"></button>
+          {% else %}
+          {% if cnt_hit == 0 %}
+          <button type="button" class="knopka" data-bs-toggle="modal" data-bs-target="#exampleModal1"></button>
+          {% else %}
+          <form method="post" action="/open_field">
+            <button type="submit" class="knopka" name="lose" value="{{i}} {{j}}"></button>
+          </form>
+          {% endif %}
+          {% endif %}
+          {% endif %}
+        </th>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button type="submit" name="btn" value="{{n}}" class="choise"> Количество выстрелов: {{cnt_hit}}</button>
+</body>
+
+</html>

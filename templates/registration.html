@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/css/1.css">
+</head>
+<body style="background-image:url(static/images/fonlogin1.jpg); background-size: cover">
+<div class="wrapper">
+  <form class="login" action="/registration" method="post">
+    <p class="title">Регистрация</p>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+        {% endwith %}
+      {{ form.name }}
+      {{ form.email }}
+      {{ form.password }}
+    <a href="/"> У меня уже есть аккаунт</a>
+    <button type="submit" class="state">Зарегистрироваться</button>
+  </form>
+
+</div>
+
+</body>
+</html>
